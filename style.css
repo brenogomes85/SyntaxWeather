@@ -123,6 +123,7 @@ nav a {
     cursor: pointer;
     transition: all 0.3s;
     display: flex;
+    justify-content: center;
     align-items: center;
     text-align: center;
 }
@@ -254,6 +255,11 @@ nav a {
 /* 🔻 Mobile abaixo de 600px */
 @media (max-width: 600px) {
     .search-bar button {
+        width: 100%; /* ou valor proporcional */
         text-align: center;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+    
     }
 }
