@@ -254,10 +254,7 @@ nav a {
 /* 🔻 Mobile abaixo de 600px */
 @media (max-width: 600px) {
     .search-bar button {
-        display: flex;
         width: 100%;
         text-align: center;
-        justify-content: center;
-        align-items: center;
     }
 }
