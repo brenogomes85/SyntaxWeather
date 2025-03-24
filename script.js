@@ -1,5 +1,5 @@
 const apiKey = "9db993e53443483c600e804ec8d625bd";
-const defaultCity = ["New York", "Lisbon", "Tokyo"];
+const defaultCity = ["New York", "Lisbon", "Tokyo", "London"];
 
 const cityInput = document.getElementById("search-input");
 const searchButton = document.getElementById("search-button");
@@ -28,7 +28,7 @@ function getWeatherIcons(weatherParams) {
 
 async function fetchWeatherForCity(city) {
     try {
-        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`)
 
         if (!response.ok) {
             throw new Error(`City not found: ${city}`);
@@ -36,7 +36,6 @@ async function fetchWeatherForCity(city) {
         return await response.json();
     } catch (error) {
         console.error(" Error fetching data not found" + error);
-
         throw new Error(error);
     }
 }
@@ -45,34 +44,41 @@ function createWeatherCard(data) {
     const weatherMain = data.weather[0].main;
     const icon = getWeatherIcons(weatherMain);
     const temperature = Math.round(data.main.temp);
-    const humidity = data.wind.speed;
+    const humidity = data.main.humidity;
     const windSpeed = Math.round(data.wind.speed);
     const description = data.weather[0].description;
+    const feelsLike = Math.round(data.main.feels_like);
 
     const card = document.createElement("div");
-    card:className = "card";
+    card.className = "card";
 
     card.innerHTML = `
-    <div class="card">
-        <h3>${data_name}, ${data.sys.country}</h3>
+    <div class="content-card">
+        <h3>${data.name}, ${data.sys.country}</h3>
         <div class="weather-icon">${icon}</div>
         <div class="temp">${temperature}</div>
         <p class="weather-description">${description}</p>
-        <div class=details>
-        <div class="detail">
-            <span></span>
-            <span>Humidity</span>
+        <div class="details">
+            <div class="detail">
+                <span>💧</span>
+                <span>${humidity}%</span>
+                <span>Humidity</span>
+            </div>
+            <div class="detail">
+                <span>💨</span>
+                <span>${windSpeed} km/h</span>
+                <span>Wind</span>
+            </div>
+            <div class="detail">
+                <span>🌡️</span>
+                <span>${feelsLike} °C</span>
+                <span>Feels Like</span>
+            </div>
         </div>
-    <div class="details">
-        <span>Wind</span>
-        <span>${windSpeed} km/h</span>
-        <span>Wind</span>
-    </div>	
     </div>
-    </div>
-    `
+  `
 
-    return card;
+  return card
 }
 
 function showLoading(active) {
@@ -83,11 +89,9 @@ function showLoading(active) {
     }
 }
 
-function hideError(message) {
-    errorMessage.textContent = message;
-    errorMessage.style.display = "block";
+function hideError() {
+    errorMessage.style.display = "none";
 }
-
 
 function showError(message) {
     errorMessage.textContent = message;
@@ -100,20 +104,25 @@ async function loadWeatherForCities(cities) {
 
     weatherCards.innerHTML = "";
 
-    for (const city of cities) {
-        try {
-                const data = await fetchWeatherForCity(city);
-                const card = createWeatherCard(data);
+    try {
+        for (const city of cities) {
+            try {
+                    const data = await fetchWeatherForCity(city);
+                    const card = createWeatherCard(data);
+                    weatherCards.appendChild(card);
 
-                weatherCards.appendChild(card);
-
-        } catch (error) {
-            console.error("Error feching weather data", error);
+            } catch (error) {
+                console.error("Error feching weather data", error);
+            }
         }
-    }
 
-    if (weatherCards.children.length === 0) {
-        showError("No weather data available.");
+        if (weatherCards.children.length === 0) {
+            showError("No weather data available.");
+        }
+    } catch (error) {
+        showError("Failed to load weather data.");
+    } finally {
+        showLoading(false);
     }
 }
 
@@ -134,8 +143,7 @@ async function searchCity() {
         const card = createWeatherCard(data);
         weatherCards.appendChild(card);
     } catch (error) {
-        showError(`"Could not find weather data for ${city}. Please try again."`);
-
+        showError(`Could not find weather data for ${city}. Please try again.`);
     } finally {
         showLoading(false);
     }
@@ -145,4 +153,10 @@ document.addEventListener("DOMContentLoaded", () => {
     loadWeatherForCities(defaultCity);
 })
 
-showLoading(true);
+searchButton.addEventListener("click", searchCity);
+
+searchButton.addEventListener("keypress", (event) => {
+    if (event.key === "Enter") {
+        searchCity();
+    }
+});

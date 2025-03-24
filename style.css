@@ -86,13 +86,14 @@ nav a {
 
 .search-bar {
     display: flex;
-    max-width: 500px;
+    max-width: 600px;
     height: 60px;
     width: 100%;
-    box-shadow: 0px 5px 15px rgba(0,215,0, 0.3);
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
     border-radius: 50px;
     overflow: hidden;
 }
+
 
 .search-bar input:focus {
     background-color: #333;
@@ -103,6 +104,8 @@ nav a {
     padding-left: 20px;
     width: 70%;
     outline: none;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
 }
 
 .search-bar input::placeholder {
@@ -110,12 +113,13 @@ nav a {
 }
 
 .search-bar button {
-    padding: 0 30px;
+    width: 30%;
+    padding: 0 50px;
     background-color: #FFD700;
     border: none;
     color: #000;
     font-weight: bold;
-    font-size: 18px;
+    font-size: 20px;
     cursor: pointer;
     transition: all 0.3s;
     display: flex;
@@ -143,7 +147,7 @@ nav a {
 }
 
 .weather-sections h2::after {
-    content: "";
+    content: " ";
     position: absolute;
     width: 60px;
     height: 3px;
@@ -154,10 +158,9 @@ nav a {
 }
 
 .loading {
-    width: 100%;
-    display: flex;
+    display: none;
     text-align: center;
-    background-color: #333;
+    margin: 40px 0;
 }
 
 .descrpition-loading {
@@ -169,6 +172,7 @@ nav a {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 30px;
 }
+
 .cards::before {
     content: "";
     position: absolute;
@@ -180,7 +184,7 @@ nav a {
 }
 
 .cards:hover {
-    transform: translateY(-10px);
+    transform: translateY(5px);
     box-shadow: 0 15px 30px rgba(255, 215, 0, 0.2);
 }
 
@@ -194,8 +198,9 @@ nav a {
 .content-card {
     display: flex;
     flex-direction: column;
-    /* rounded: 10px; */
-
+    border-radius: 10px;
+    padding: 20px;
+    align-items: center;
 }
 
 .details {
@@ -205,6 +210,11 @@ nav a {
     margin-top: 20px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     padding-top: 20px;
+}
+
+.detail {
+    align-content: space-between;
+    text-align: center;
 }
 
 .temp {
