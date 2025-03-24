@@ -251,15 +251,3 @@ nav a {
         transform: translateY(0);
     }
 }
-
-/* 🔻 Mobile abaixo de 600px */
-@media (max-width: 600px) {
-    .search-bar button {
-        width: 100%; /* ou valor proporcional */
-        text-align: center;
-        justify-content: center;
-        align-items: center;
-        display: flex;
-    
-    }
-}
